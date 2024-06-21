@@ -67,6 +67,8 @@ start
 {
     //Start when 
     // - remaining anomalies = 31 
-    // - inGameTimer crosses 0
+    // - inGameTimer crosses 0.49 
+    //There is a delay between the game's timer starting and the actual start of the time per the official leaderboard rules. 
+    //On my machine, that delay was measured to be 0.49s. If that should turn out to not be universal, people may have to make individual adjustments.
     return current.inGameTimer >= 0.49 && old.inGameTimer < 0.49 && current.levelVal == 0 && current.anomsVal == 31;
 }
