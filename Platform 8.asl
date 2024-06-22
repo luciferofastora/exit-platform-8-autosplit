@@ -18,9 +18,10 @@ state("Exit8-Win64-Shipping")
 {
     float inGameTimer : "Exit8-Win64-Shipping.exe", 0x0702F350,  0x30,  0x18, 0x240,  0xE8, 0x3C4;
     int   levelVal    : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x30, 0x858,  0xC0, 0x298, 0x3B8;
-    int   anomsVal    : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x20, 0xEE0,  0x98,  0x20,  0xFC0, 0x220,  0x38;
+    int   anomsVal    : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x20, 0xEE0,  0x98,  0x20, 0xFC0, 0x220,  0x38;
     double posLng     : "Exit8-Win64-Shipping.exe", 0x0741CCB8,  0x20, 0x1A0, 0x270,   0x0, 0x260; 
     double posLat     : "Exit8-Win64-Shipping.exe", 0x0741CCB8,  0x20, 0x1A0, 0x270,   0x0, 0x268; 
+    bool announcement : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x20, 0xEE0,  0x98,  0x20, 0xFC0, 0x1E0,  0x78;
 }
 
 /*
@@ -70,5 +71,8 @@ start
     // - inGameTimer crosses 0.49 
     //There is a delay between the game's timer starting and the actual start of the time per the official leaderboard rules. 
     //On my machine, that delay was measured to be 0.49s. If that should turn out to not be universal, people may have to make individual adjustments.
-    return current.inGameTimer >= 0.49 && old.inGameTimer < 0.49 && current.levelVal == 0 && current.anomsVal == 31;
+    //Additionally, the announcement adds another 13 seconds to the delay if it is active.
+    
+    double triggerOffset = current.announcement ? 13.49 : 0.49;
+    return current.inGameTimer >= triggerOffset && old.inGameTimer < triggerOffset && current.levelVal == 0 && current.anomsVal == 31;
 }
