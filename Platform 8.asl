@@ -16,22 +16,26 @@
 
 state("Exit8-Win64-Shipping") 
 {
-    int   levelVal    : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x20, 0xFC0, 0x220,  0x38;
-    int   anomsVal    : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x20, 0xEE0,  0x98,  0x20, 0xFC0, 0x220,  0x38;
-    bool announcement : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x20, 0xFC0, 0x1E0,  0x78;
+    int    levelVal    : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x20, 0xFC0, 0x220,  0x38;
+    int    anomsVal    : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x20, 0xEE0,  0x98,  0x20, 0xFC0, 0x220,  0x38;
+    bool   announcement : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x20, 0xFC0, 0x1E0,  0x78;
 
-    float inGameTimer : "Exit8-Win64-Shipping.exe", 0x0702F350,  0x30,  0x18, 0x240,  0xE8, 0x3C4;
+    float  inGameTimer : "Exit8-Win64-Shipping.exe", 0x0702F350,  0x30,  0x18, 0x240,  0xE8, 0x3C4;
     double posX       : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x30, 0x338, 0x660,  0x58, 0x260; 
     double posY       : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x30, 0x338, 0x660,  0x58, 0x268; 
     double posY       : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x30, 0x338, 0x660,  0x58, 0x270; 
 }
 
-/*
 update
 {
+    //Keep the triggerOffset in line with the settings
+    //There is a delay between the game's timer starting and the actual start of the time per the official leaderboard rules. 
+    //On my machine, that delay was measured to be 0.49s. If that should turn out to not be universal, people may have to make individual adjustments.
+    //Additionally, the announcement adds another 13 seconds to the delay if it is active.
+    vars.triggerOffset = current.announcement ? 13.49 : 0.49;
+
     //TODO: Distinguish death / All Anomalies completion / save deletion to restrict automatic reset to actual restarts
 }
-*/
 
 /*
 isLoading
@@ -70,11 +74,6 @@ start
 {
     //Start when 
     // - remaining anomalies = 31 
-    // - inGameTimer crosses 0.49 
-    //There is a delay between the game's timer starting and the actual start of the time per the official leaderboard rules. 
-    //On my machine, that delay was measured to be 0.49s. If that should turn out to not be universal, people may have to make individual adjustments.
-    //Additionally, the announcement adds another 13 seconds to the delay if it is active.
-    
-    double triggerOffset = current.announcement ? 13.49 : 0.49;
-    return current.inGameTimer >= triggerOffset && old.inGameTimer < triggerOffset && current.levelVal == 0 && current.anomsVal == 31;
+    // - inGameTimer crosses offset
+    return current.inGameTimer >= vars.triggerOffset && old.inGameTimer < vars.triggerOffset && current.levelVal == 0 && current.anomsVal == 31;
 }
