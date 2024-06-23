@@ -18,10 +18,9 @@ I expect it to work all the same, but if you have tried it I appreciate feedback
 Automatic reset and (re-)start when the player is returned to the game area after
   - Deleting the save
   - Dying *without beating any anomalies before*
-  - Completing All Anomalies
 
-Deleting the save after such a death or a completion will count as an additional "attempt" in the split files. 
-I haven't found a way to circumvent this so far. 
+Deleting the save after a reset will count as an additional "attempt" in the split files. I haven't found a way to circumvent this so far. 
+
 There is also no auto-stop on reaching the credits, and it's currently not clear if that will be possible for Real Time measurements. 
 You will have to stop the timer manually for now. 
 
