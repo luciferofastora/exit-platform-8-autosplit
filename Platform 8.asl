@@ -26,7 +26,7 @@ state("Exit8-Win64-Shipping")
     float  inGameTimer  : "Exit8-Win64-Shipping.exe", 0x0702F350,  0x30,  0x18, 0x240,  0xE8, 0x3C4;
     double posX         : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x30, 0x338, 0x660,  0x58, 0x260; 
     double posY         : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x30, 0x338, 0x660,  0x58, 0x268; 
-    double posY         : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x30, 0x338, 0x660,  0x58, 0x270; 
+    double posZ         : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x30, 0x338, 0x660,  0x58, 0x270; 
     
 }
 
@@ -34,6 +34,9 @@ startup
 {
     vars.resetBlockedOnce = false;
     vars.resetBlocked = false;
+    
+    vars.splitFirstCredits = true;
+    vars.splitSecondCredits= false;
 }
 
 init 
@@ -101,12 +104,17 @@ onReset //On manual reset, clear reset blocking flags
     vars.triggerOffset = current.announcement ? 13.49 : 0.49;
 }
     
-/*
+
 split 
 {
     //Unused as splits don't currently make a lot of sense on a fairly random game
+    double firstCreditThreshold = -147.0;
+    
+    return (vars.splitFirstCredits && current.levelVal == 9 && old.posY > firstCreditThreshold && current.posY <= firstCreditThreshold); //TODO Determine conditions for second credits
+
+    
 }
-*/
+
 
 start 
 {
