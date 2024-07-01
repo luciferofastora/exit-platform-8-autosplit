@@ -6,12 +6,13 @@ These are provided as-is without any warranty.
 ## Supported Games and Versions
 This timer has so far been tested for:
 - Platform 8 
+  - v 1.0.6
   - v 1.1.1
 
-Other versions (including those of Exit 8) may work as well, but have not been tried so far. 
-If you have test results to contribute here, please let me know through a [GitHub Issue](https://github.com/luciferofastora/exit-platform-8-autosplit/issues) or by contacting me through the [official Exit 8 / Platform 8 Speedrunning Discord](https://discord.com/invite/WfAv8Vad33).
-I also haven't tested restarting the game mid-run (as may be required for Platform 8 - All Achievements) for technical reasons. 
-I expect it to work all the same, but if you have tried it I appreciate feedback on that as well.
+This has been confirmed to be working for Beat The Game, All Anomalies and All Achievements. 
+Other versions may work as well, but have not been tried so far. If you have test results to contribute here, please let me know through a [GitHub Issue](https://github.com/luciferofastora/exit-platform-8-autosplit/issues) or by contacting me through the [official Exit 8 / Platform 8 Speedrunning Discord](https://discord.com/invite/WfAv8Vad33).
+
+The Exit 8 has been confirmed to not work, but support is planned for the future. 
 
 ## Features
 ### Platform 8
@@ -19,14 +20,14 @@ Automatic reset and (re-)start when the player is returned to the game area afte
   - Deleting the save
   - Dying *without beating any anomalies before*
 
+Through the Scriptable Auto Splitter settings in the Layout (see [Setting up Autosplitter](#setting-up-autosplitter) below), it can also be set to automatically split when reaching the first or second credits (or both). 
+If that is the last (or only) split, this will stop the timer. 
+
 Deleting the save after a reset will count as an additional "attempt" in the split files. I haven't found a way to circumvent this so far. 
 
-There is also no auto-stop on reaching the credits, and it's currently not clear if that will be possible for Real Time measurements. 
-You will have to stop the timer manually for now. 
-
 ### The Exit 8
-The executable for Platform 8 is largely built on the base of The Exit 8. It may well be the case that the above features work for that game as well. 
-However, this has not been tested yet (see the [Supported Games and Versions](#supported-games-and-versions) above).
+The executable for Platform 8 is largely built on the base of The Exit 8. I expect I will be able to extend the script to support that game as well. 
+However, the current configurations don't work for that game (see the [Supported Games and Versions](#supported-games-and-versions) above).
 
 ## Usage
 ### Short version
@@ -42,7 +43,8 @@ However, this has not been tested yet (see the [Supported Games and Versions](#s
 3. If you're using or editing your own layout, add a "Scriptable Auto Splitter" component to it: Click the plus button, then select Control > Scriptable Auto Splitter.
 4. Double-Click the "Scriptable Auto Splitter" component to open the settings, then use Browse to select the `.asl` file. Your auto-splitter should immediately be loaded and active. 
 5. (Optional) If you wish to disable the Auto-Start or -Reset, untick the respective checkboxes below the Script Path selector.
-6. (Optional) To display world records, add an Information > World Record component. It will automatically load the official leaderboard record for your given game and category (see below)
+6. (Optional) If you wish to enable automatic splitting, the desired conditions can also be set here.
+7. (Optional) To display world records, add an Information > World Record component. It will automatically load the official leaderboard record for your given game and category (see below)
 
 #### Setting up the Timer
 If you wish to display the game and category in the title of your timer and load the relevant world record from speedrun.com, either load my premade split file for your game and category with Open Splits > From File to select the relevant `.lss` file or
