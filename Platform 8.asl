@@ -35,8 +35,16 @@ startup
     vars.resetBlockedOnce = false;
     vars.resetBlocked = false;
     
+    
+    settings.Add("firstCredits", false, "First Credits");
+    settings.SetToolTip("firstCredits", "Split / Stop on reaching the first credits (Only if Split is enabled)");
+/*    settings.Add("secondCredits", false, "Second Credits");
+    settings.SetToolTip("secondCredits", "Split / Stop on reaching the second credits (Only if Split is enabled)"); */
+    
     vars.splitFirstCredits = true;
     vars.splitSecondCredits= false;
+    
+    
 }
 
 init 
@@ -110,7 +118,7 @@ split
     //Unused as splits don't currently make a lot of sense on a fairly random game
     double firstCreditThreshold = -147.0;
     
-    return (vars.splitFirstCredits && current.levelVal == 9 && old.posY > firstCreditThreshold && current.posY <= firstCreditThreshold); //TODO Determine conditions for second credits
+    return (settings["firstCredits"] && current.levelVal == 9 && old.posY > firstCreditThreshold && current.posY <= firstCreditThreshold); //TODO Determine conditions for second credits
 
     
 }
