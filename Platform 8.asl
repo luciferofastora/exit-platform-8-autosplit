@@ -34,12 +34,15 @@ startup
 {
     vars.resetBlockedOnce = false;
     vars.resetBlocked = false;
+    vars.splitOnFirstCredits = false;
+    vars.splitOnSecondCredits = false;
     
-    
-    settings.Add("firstCredits", false, "First Credits");
-    settings.SetToolTip("firstCredits", "Split / Stop on reaching the first credits (Only if Split is enabled)");
-    settings.Add("secondCredits", false, "Second Credits");
-    settings.SetToolTip("secondCredits", "Split / Stop on reaching the second credits (Only if Split is enabled)"); 
+    settings.Add("overrideCategory", false, "Override Category Default Splits");
+    settings.SetToolTip("overrideCategory", "Override the default splits for the selected category (Beat the Game / All Anomalies only)");
+    settings.Add("firstCredits", false, "First Credits", "overrideCategory");
+    settings.SetToolTip("firstCredits", "Split / Stop on reaching the first credits");
+    settings.Add("secondCredits", false, "Second Credits", "overrideCategory");
+    settings.SetToolTip("secondCredits", "Split / Stop on reaching the second credits"); 
 }
 
 init 
@@ -54,13 +57,15 @@ update
 {
     
     //Distinguish between a reset from All Anomaly completion, from death on first anomaly and from actual save reset
-    //All Anomalies: Save (and flag) is reset when turning into the final hallway -> Block reset once
-    //TODO: Prevent reset block when deleting save between turning in and start of credits
+    //All Anomalies: Save (and flag) is reset when reaching credits -> Block reset once
     if (old.allAnomalies && !current.allAnomalies) 
     {
         vars.resetBlockedOnce = true;
     }        
     //TODO: Detect death
+    
+    vars.splitOnFirstCredits = settings["overrideCategory"] ? settings["firstCredits"] : timer.Run.CategoryName == "Beat The Game";
+    vars.splitOnSecondCredits = settings["overrideCategory"] ? settings["secondCredits"] : timer.Run.CategoryName == "All Anomalies";
 }
 
 /*
@@ -102,9 +107,6 @@ onReset //On manual reset, clear reset blocking flags
 {
     vars.resetBlockedOnce = false;
     vars.resetBlocked = false;
-
-    //Keep the triggerOffset in line with the settings on reset 
-    vars.triggerOffset = current.announcement ? 13.49 : 0.49;
 }
     
 
@@ -113,13 +115,14 @@ split
     //Used for automatically splitting / stopping when reaching the respective credits
     double firstCreditThreshold = -147.0;
     
-    return (settings["firstCredits"] && current.levelVal == 9 && old.posY > firstCreditThreshold && current.posY <= firstCreditThreshold)
-        || (settings["secondCredits"] && old.allAnomalies && !current.allAnomalies);    
+    return (vars.splitOnFirstCredits && current.levelVal == 9 && old.posY > firstCreditThreshold && current.posY <= firstCreditThreshold)
+        || (vars.splitOnSecondCredits && old.allAnomalies && !current.allAnomalies);    
 }
 
 
 start 
 {
+    vars.triggerOffset = current.announcement ? 13.49 : 0.49; //Only update while timer is not running 
     //Start when 
     // - remaining anomalies = 31 
     // - inGameTimer crosses offset
