@@ -20,8 +20,9 @@ Automatic reset and (re-)start when the player is returned to the game area afte
   - Deleting the save
   - Dying *without beating any anomalies before*
 
-Through the Scriptable Auto Splitter settings in the Layout (see [Setting up Autosplitter](#setting-up-autosplitter) below), it can also be set to automatically split when reaching the first or second credits (or both). 
+For "Beat The Game" and "All Anomalies", the timer will automatically be split upon reaching the relevant credits. 
 If that is the last (or only) split, this will stop the timer. 
+This can be configured in the autosplitter settings (see [Usage](#usage) below). 
 
 Deleting the save after a reset will count as an additional "attempt" in the split files. I haven't found a way to circumvent this so far. 
 
@@ -31,9 +32,10 @@ However, the current configurations don't work for that game (see the [Supported
 
 ## Usage
 ### Short version
-- Select my `.asl` script for the Script Path of an "Scriptable Auto Splitter" component
-- Use Real Time Comparison (Game Time is wrong currently)
-- Manually split (stop) on reaching the end for your category. 
+- Set Game to Platform 8
+- (Optional) Select Category "Beat The Game" or "All Anomalies"
+- (Optional) Customize settings for automatically starting, splitting and resetting
+- Activate
 
 ### Long version 
 #### Setting up Autosplitter
@@ -42,8 +44,8 @@ However, the current configurations don't work for that game (see the [Supported
 2. Right-click the timer and select Edit Layout.
 3. If you're using or editing your own layout, add a "Scriptable Auto Splitter" component to it: Click the plus button, then select Control > Scriptable Auto Splitter.
 4. Double-Click the "Scriptable Auto Splitter" component to open the settings, then use Browse to select the `.asl` file. Your auto-splitter should immediately be loaded and active. 
-5. (Optional) If you wish to disable the Auto-Start or -Reset, untick the respective checkboxes below the Script Path selector.
-6. (Optional) If you wish to enable automatic splitting, the desired conditions can also be set here.
+5. (Optional) If you wish to disable the Auto-Start, -Split or -Reset, untick the respective checkboxes below the Script Path selector.
+6. (Optional) If you wish to customize automatic splitting, the category defaults for Beat The Game and All Anomalies can also be overridden here.
 7. (Optional) To display world records, add an Information > World Record component. It will automatically load the official leaderboard record for your given game and category (see below)
 
 #### Setting up the Timer
