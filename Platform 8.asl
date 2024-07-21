@@ -17,17 +17,18 @@
 state("Exit8-Win64-Shipping") 
 {
 
-    int    anomsVal     : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x20, 0xEE0,  0x98,  0x20, 0xFC0, 0x220,  0x38;
-    bool   baseCleared  : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x20, 0xEE0,  0x98,  0x20, 0xFC0, 0x220,  0x28;
-    bool   allAnomalies : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x20, 0xEE0,  0x98,  0x20, 0xFC0, 0x220,  0x29;
-    bool   announcement : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x20, 0xFC0, 0x1E0,  0x78;
+    int    anomsVal     : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x020, 0xEE0,  0x98,  0x20, 0xFC0, 0x220,  0x38;
+    bool   baseCleared  : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x020, 0xEE0,  0x98,  0x20, 0xFC0, 0x220,  0x28;
+    bool   allAnomalies : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x020, 0xEE0,  0x98,  0x20, 0xFC0, 0x220,  0x29;
+    bool   announcement : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x020, 0xFC0, 0x1E0,  0x78;
 
-    int    levelVal     : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x30, 0x858,  0xC0, 0x298, 0x3B8;
-    float  inGameTimer  : "Exit8-Win64-Shipping.exe", 0x0702F350,  0x30,  0x18, 0x240,  0xE8, 0x3C4;
-    double posX         : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x30, 0x338, 0x660,  0x58, 0x260; 
-    double posY         : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x30, 0x338, 0x660,  0x58, 0x268; 
-    double posZ         : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x30, 0x338, 0x660,  0x58, 0x270; 
+    int    levelVal     : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x020, 0x9B8, 0x078, 0x158, 0x2A8, 0x000, 0x3E8;
+    double posX         : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x020, 0x9B8, 0x078, 0x158, 0x2A8, 0x000, 0x308, 0x328, 0x128; 
+    double posY         : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x020, 0x9B8, 0x078, 0x158, 0x2A8, 0x000, 0x308, 0x328, 0x130; 
+    double posZ         : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x020, 0x9B8, 0x078, 0x158, 0x2A8, 0x000, 0x308, 0x328, 0x138; 
+    byet   movementMode : "Exit8-Win64-Shipping.exe", 0x074ACFC0,  0x020, 0x9B8, 0x078, 0x158, 0x2A8, 0x000, 0x308, 0x320, 0x1A4;
     
+    float  inGameTimer  : "Exit8-Win64-Shipping.exe", 0x0702F350,  0x30,  0x18, 0x240,  0xE8, 0x3C4;
 }
 
 startup 
@@ -111,9 +112,9 @@ onReset //On manual reset, clear reset blocking flags
 split 
 {
     //Used for automatically splitting / stopping when reaching the respective credits
-    double firstCreditThreshold = -147.0;
+    double firstCreditThreshold = 86.3;
     
-    return (settings["firstCredits"] && current.levelVal == 9 && old.posY > firstCreditThreshold && current.posY <= firstCreditThreshold)
+    return (settings["firstCredits"] && current.levelVal == 9 && old.posZ > firstCreditThreshold && current.posZ <= firstCreditThreshold)
         || (settings["secondCredits"] && old.allAnomalies && !current.allAnomalies);    
 }
 
@@ -121,7 +122,12 @@ split
 start 
 {
     //Start when 
-    // - remaining anomalies = 31 
-    // - inGameTimer crosses offset
-   return current.inGameTimer >= vars.triggerOffset && old.inGameTimer < vars.triggerOffset && current.levelVal == 0 && current.anomsVal == 31;
+    // - all save values are default
+    // - position in seat is initialised
+   return current.levelVal == 0 
+        && current.anomsVal == 31
+        && current.baseCleared == false
+        && current.posY == 120.5
+        && old.posY == 0
+        ;
 }
